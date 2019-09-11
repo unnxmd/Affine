@@ -14,6 +14,7 @@ namespace Affine_cipher
     {
         private string[] filesEncrypt;
         private string[] filesDecrypt;
+        private static int aInversed = Inverse(21);
 
         public FormMain()
         {
@@ -64,32 +65,25 @@ namespace Affine_cipher
 
         public static byte[] AffineEncrypt(byte[] bytes)
         {
-            int i = 0;
-            byte[] encrypted = new byte[bytes.Length];
-            foreach (byte bt in bytes)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                int x = Convert.ToInt32(bt);
-                encrypted[i] = Convert.ToByte((21 * x + 57) % 256);
-                i++;
+                int x = Convert.ToInt32(bytes[i]);
+                bytes[i] = Convert.ToByte((21 * x + 57) % 256);
             }
             MessageBox.Show("Зашифровано!");
-            return encrypted;
+            return bytes;
         }
 
         public static byte[] AffineDecrypt(byte[] bytes)
         {
-            int i = 0;
-            byte[] decrypted = new byte[bytes.Length];
-            int aInversed = Inverse(21);
-            foreach (byte bt in bytes)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                int x = Convert.ToInt32(bt);
+                int x = Convert.ToInt32(bytes[i]);
                 if (x - 57 < 0) x += 256;
-                decrypted[i] = Convert.ToByte((aInversed * (x - 57)) % 256);
-                i++;
+                bytes[i] = Convert.ToByte(aInversed * (x - 57) % 256);
             }
             MessageBox.Show("Расшифровано!");
-            return decrypted;
+            return bytes;
         }
 
         public static int Inverse(int a)
